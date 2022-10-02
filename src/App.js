@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useSelector } from 'react-redux';
+import { Route, Routes } from 'react-router';
+import Loader from './Components/Loader/Loader';
+import { Details, Posts } from './Pages';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const { isLoading, error } = useSelector(state => state.posts);
+
+	return (
+		<div className="max-w-[900px] mx-auto text-center p-5">
+			{isLoading && <Loader />}
+			{error && <h2 className="font-bold text-xl">Error occured: {error}</h2>}
+			<Routes>
+				<Route index path="/" element={<Posts />} />
+				<Route path="/posts/:id" element={<Details />} />
+			</Routes>
+		</div>
+	);
 }
 
 export default App;
